@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cassiano Fabric and Tailors — Karachi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#1C1B19;
+    --ivory:#EFE8D8;
+    --brass:#A6813C;
+    --maroon:#6E2A34;
+    --stone:#8B8478;
+    --line: rgba(28,27,25,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ivory);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono', monospace; letter-spacing:0.02em;}
+
+  /* Stitch divider — signature element */
+  .stitch{
+    display:flex; align-items:center; gap:8px;
+    width:100%; overflow:hidden; height:14px; margin:0 auto;
+  }
+  .stitch span{
+    flex:1; height:1px;
+    background-image: repeating-linear-gradient(90deg, var(--stone) 0 6px, transparent 6px 12px);
+  }
+  .stitch svg{flex-shrink:0; width:16px; height:16px; opacity:0.7;}
+
+  /* Header / nav */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(239,232,216,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1100px; margin:0 auto; padding:18px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .brand{display:flex; align-items:baseline; gap:10px;}
+  .brand h1{font-size:1.9rem; font-weight:600;}
+  .brand .sub{font-size:0.68rem; color:var(--stone); letter-spacing:0.12em; text-transform:uppercase;}
+  nav ul{list-style:none; display:flex; gap:28px;}
+  nav a{
+    color:var(--charcoal); text-decoration:none; font-size:0.85rem;
+    letter-spacing:0.03em; cursor:pointer; position:relative; padding-bottom:4px;
+    background:none; border:none; font-family:inherit;
+  }
+  nav a::after{
+    content:''; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--brass); transition:width 0.25s ease;
+  }
+  nav a.active::after, nav a:hover::after{width:100%;}
+  nav a.active{color:var(--brass);}
+  .nav-toggle{display:none; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--charcoal);}
+
+  @media (max-width:720px){
+    nav ul{
+      position:fixed; top:64px; right:-100%; height:calc(100vh - 64px); width:min(78vw,320px);
+      background:var(--ivory); flex-direction:column; padding:36px 28px; gap:26px;
+      transition:right 0.3s ease; border-left:1px solid var(--line);
+    }
+    nav ul.open{right:0;}
+    .nav-toggle{display:block;}
+  }
+
+  main{max-width:1100px; margin:0 auto; padding:0 24px;}
+  section{padding-top:20px; scroll-margin-top:80px;}
+  section + section{border-top:1px solid var(--line); margin-top:70px; padding-top:70px;}
+
+  /* HERO */
+  .hero{padding:60px 0 50px; position:relative;}
+  .hero-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:44px; align-items:center;}
+  @media (max-width:800px){.hero-grid{grid-template-columns:1fr;}}
+  .hero-photo{
+    border-radius:2px; overflow:hidden; aspect-ratio:4/5;
+    box-shadow:0 20px 50px rgba(28,27,25,0.18);
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover; filter:sepia(0.2) saturate(1.05) contrast(1.03);}
+  .hero-eyebrow{
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--maroon); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{content:''; width:24px; height:1px; background:var(--maroon);}
+  .hero h2{font-size:clamp(2.4rem, 6vw, 4.4rem); line-height:1.05; max-width:820px;}
+  .hero h2 em{font-style:italic; color:var(--brass);}
+  .hero p.lede{
+    margin-top:24px; max-width:520px; font-size:1.05rem; color:#3a3733; line-height:1.6;
+  }
+  .hero-cta{display:flex; gap:16px; margin-top:38px; flex-wrap:wrap;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px; border-radius:2px; font-size:0.85rem; letter-spacing:0.02em;
+    text-decoration:none; cursor:pointer; border:1px solid transparent; transition:all 0.2s ease;
+    font-family:'Work Sans', sans-serif;
+  }
+  .btn-primary{background:var(--charcoal); color:var(--ivory);}
+  .btn-primary:hover{background:var(--maroon);}
+  .btn-ghost{border-color:var(--charcoal); color:var(--charcoal); background:none;}
+  .btn-ghost:hover{background:var(--charcoal); color:var(--ivory);}
+
+  /* Measure strip */
+  .measure-strip{
+    margin-top:70px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:22px 0; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;
+  }
+  .measure-strip div{font-size:0.78rem; color:var(--stone);}
+  .measure-strip strong{display:block; font-family:'Fraunces', serif; font-size:1.5rem; color:var(--charcoal); font-weight:500;}
+
+  /* Services / Fabrics */
+  .section-head{margin:70px 0 34px;}
+  .section-head .tag{font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--maroon);}
+  .section-head h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-top:10px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .card{background:var(--ivory); padding:32px 26px; position:relative; transition:background 0.25s ease;}
+  .card:hover{background:#fbf8f0;}
+  .card .num{font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--brass);}
+  .card h3{font-size:1.25rem; margin:14px 0 10px;}
+  .card p{font-size:0.9rem; color:#514c45; line-height:1.55;}
+
+  /* Fabric swatches */
+  .swatch-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:40px;}
+  .swatch{
+    width:110px; text-align:center; cursor:pointer;
+  }
+  .swatch .chip{
+    width:100%; height:78px; border-radius:2px; margin-bottom:8px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+    transition:transform 0.2s ease;
+  }
+  .swatch:hover .chip{transform:translateY(-4px);}
+  .swatch span{font-size:0.72rem; color:var(--stone);}
+
+  /* Gallery */
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:30px;
+  }
+  .gallery-item{
+    aspect-ratio:3/4; border-radius:2px; position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:16px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .gallery-item img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:sepia(0.25) saturate(1.05) contrast(1.02);
+  }
+  .gallery-item span{
+    position:relative; z-index:2; color:#EFE8D8; font-size:0.78rem; font-weight:500;
+    background:rgba(28,27,25,0.6); padding:4px 10px;
+  }
+
+  /* Contact */
+  .contact-wrap{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; margin-top:36px; align-items:start;
+  }
+  @media (max-width:720px){.contact-wrap{grid-template-columns:1fr;}}
+  .contact-card{
+    border:1px solid var(--line); padding:34px; background:#fbf8f0;
+  }
+  .contact-card h3{font-size:1.3rem; margin-bottom:6px;}
+  .contact-card p.desc{color:var(--stone); font-size:0.85rem; margin-bottom:26px;}
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block; font-size:0.75rem; letter-spacing:0.05em; color:var(--stone); margin-bottom:6px; text-transform:uppercase;}
+  .form-row input, .form-row select, .form-row textarea{
+    width:100%; padding:11px 12px; border:1px solid var(--line); background:var(--ivory);
+    font-family:'Work Sans',sans-serif; font-size:0.9rem; color:var(--charcoal); border-radius:2px;
+  }
+  .form-row textarea{resize:vertical; min-height:80px;}
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus{
+    outline:2px solid var(--brass); outline-offset:1px;
+  }
+
+  .info-block{padding-top:6px;}
+  .info-line{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .info-line .k{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--stone); width:90px; flex-shrink:0;}
+  .info-line .v{font-size:0.95rem;}
+
+  footer{
+    margin-top:90px; border-top:1px solid var(--line); padding:30px 24px;
+    text-align:center; color:var(--stone); font-size:0.78rem;
+  }
+  footer .stitch{max-width:280px; margin:0 auto 20px;}
+
+  /* Floating WhatsApp */
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    background:#1C1B19; color:var(--ivory); border-radius:2px;
+    padding:13px 20px; display:flex; align-items:center; gap:10px;
+    text-decoration:none; font-size:0.85rem; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+    transition:background 0.2s ease;
+  }
+  .wa-float:hover{background:var(--maroon);}
+  .wa-float svg{width:18px; height:18px;}
+
+  ::selection{background:var(--brass); color:var(--ivory);}
+  a, button{-webkit-tap-highlight-color:transparent;}
+
+  /* Scroll reveal — stitched-in effect */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-stagger.in .card,
+  .reveal-stagger.in .gallery-item,
+  .reveal-stagger.in .swatch{
+    animation:stitchIn 0.55s ease forwards;
+  }
+  .reveal-stagger .card, .reveal-stagger .gallery-item, .reveal-stagger .swatch{opacity:0;}
+  .reveal-stagger.in .card:nth-child(1),.reveal-stagger.in .gallery-item:nth-child(1),.reveal-stagger.in .swatch:nth-child(1){animation-delay:0.02s;}
+  .reveal-stagger.in .card:nth-child(2),.reveal-stagger.in .gallery-item:nth-child(2),.reveal-stagger.in .swatch:nth-child(2){animation-delay:0.09s;}
+  .reveal-stagger.in .card:nth-child(3),.reveal-stagger.in .gallery-item:nth-child(3),.reveal-stagger.in .swatch:nth-child(3){animation-delay:0.16s;}
+  .reveal-stagger.in .card:nth-child(4),.reveal-stagger.in .gallery-item:nth-child(4),.reveal-stagger.in .swatch:nth-child(4){animation-delay:0.23s;}
+  .reveal-stagger.in .card:nth-child(5),.reveal-stagger.in .gallery-item:nth-child(5),.reveal-stagger.in .swatch:nth-child(5){animation-delay:0.30s;}
+  .reveal-stagger.in .card:nth-child(6),.reveal-stagger.in .gallery-item:nth-child(6),.reveal-stagger.in .swatch:nth-child(6){animation-delay:0.37s;}
+  .reveal-stagger.in .card:nth-child(7),.reveal-stagger.in .swatch:nth-child(7){animation-delay:0.44s;}
+  .reveal-stagger.in .card:nth-child(8),.reveal-stagger.in .swatch:nth-child(8){animation-delay:0.51s;}
+  @keyframes stitchIn{
+    from{opacity:0; transform:translateY(22px) scale(0.98);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    .reveal, .reveal-stagger .card, .reveal-stagger .gallery-item, .reveal-stagger .swatch{opacity:1 !important; transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">
+      <h1>Cassiano</h1>
+      <span class="sub">Fabric &amp; Tailors — Karachi</span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="#home" data-tab="home" class="active">Home</a></li>
+        <li><a href="#services" data-tab="services">Services</a></li>
+        <li><a href="#fabrics" data-tab="fabrics">Fabrics</a></li>
+        <li><a href="#gallery" data-tab="gallery">Gallery</a></li>
+        <li><a href="#contact" data-tab="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow">Bespoke tailoring, Karachi</div>
+          <h2>Sili hui shaan,<br><em>naapi hui</em> perfection.</h2>
+          <p class="lede">Har stitch aapke naap se, har fabric aapki pasand se. Cassiano mein hum sirf kapray nahi silte — aapki shakhsiyat ko tailor karte hain.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">Book Your Fitting</a>
+            <a class="btn btn-ghost" href="#fabrics">Explore Fabrics</a>
+          </div>
+        </div>
+        <div class="hero-photo" style="background:#1C1B19;">
+          <img src="https://images.unsplash.com/photo-1584184924103-e310d9dc82fc?fm=jpg&q=70&w=900&fit=crop" alt="Bespoke suit" loading="eager">
+        </div>
+      </div>
+
+      <div class="measure-strip reveal">
+        <div><strong>12+</strong>Saal ka tajurba</div>
+        <div><strong>3-Piece</strong>Suit se Shalwar Kameez tak</div>
+        <div><strong>48hr</strong>Rush order fitting</div>
+        <div><strong>100%</strong>Hand-finished alterations</div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="tag">Kyun Cassiano</div>
+      <h2>Har naap, ek kahani</h2>
+    </div>
+    <div class="grid reveal-stagger">
+      <div class="card">
+        <div class="num mono">01</div>
+        <h3>Ghar baithe naap</h3>
+        <p>Master tailor aapke ghar ya office aakar naap le sakta hai — waqt bachao, quality wahi rahegi.</p>
+      </div>
+      <div class="card">
+        <div class="num mono">02</div>
+        <h3>Fabric ki apni pasand</h3>
+        <p>Imported ya local — jo fabric aapko pasand ho hum wahi source karte hain, ya humari collection se chun lein.</p>
+      </div>
+      <div class="card">
+        <div class="num mono">03</div>
+        <h3>Free alteration, ek baar</h3>
+        <p>Agar fitting mein farq laga to pehli alteration hamesha free — jab tak aap satisfied na ho jayein.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-head">
+      <div class="tag">Services</div>
+      <h2>Har mauqay ke liye tailoring</h2>
+    </div>
+    <div class="grid reveal-stagger">
+      <div class="card"><div class="num mono">A</div><h3>Formal Suits</h3><p>2-piece aur 3-piece suits — office, shaadi ya interview ke liye, sharp fitting ke sath.</p></div>
+      <div class="card"><div class="num mono">B</div><h3>Shalwar Kameez</h3><p>Casual se lekar eid aur shaadi wali stitching tak — traditional cut, modern finish.</p></div>
+      <div class="card"><div class="num mono">C</div><h3>Sherwani &amp; Waskat</h3><p>Baraat aur mehendi ke liye khaas design, hand-embroidery ka option bhi available.</p></div>
+      <div class="card"><div class="num mono">D</div><h3>Alterations</h3><p>Kisi bhi purane kapray ki fitting theek karwani ho — same-day service bhi milta hai.</p></div>
+      <div class="card"><div class="num mono">E</div><h3>Uniform Stitching</h3><p>Schools, offices aur institutions ke liye bulk uniform orders, consistent quality ke sath.</p></div>
+      <div class="card"><div class="num mono">F</div><h3>Rush Orders</h3><p>Achanak koi function aa gaya? 48 ghantay mein fitting-ready outfit mil sakta hai.</p></div>
+    </div>
+  </section>
+
+  <!-- FABRICS -->
+  <section id="fabrics">
+    <div class="section-head">
+      <div class="tag">Fabric Collection</div>
+      <h2>Chuo, dekho, phir chuno</h2>
+    </div>
+    <p style="max-width:520px; color:#514c45; font-size:0.95rem; line-height:1.6;">Har fabric ka apna mizaj hota hai — kuch garmi ke liye halka, kuch sardi ke liye garam, kuch sirf shaan ke liye. Neeche kuch popular categories hain, dukaan pe aakar poora range dekh sakte hain.</p>
+    <div class="swatch-row reveal-stagger">
+      <div class="swatch"><div class="chip" style="background:#2b2f3a;"></div><span>Navy Wool</span></div>
+      <div class="swatch"><div class="chip" style="background:#4a3a2e;"></div><span>Chestnut Tweed</span></div>
+      <div class="swatch"><div class="chip" style="background:#e7ddc9;"></div><span>Ivory Linen</span></div>
+      <div class="swatch"><div class="chip" style="background:#6e2a34;"></div><span>Maroon Velvet</span></div>
+      <div class="swatch"><div class="chip" style="background:#8b8478;"></div><span>Stone Cotton</span></div>
+      <div class="swatch"><div class="chip" style="background:#1c1b19;"></div><span>Jet Black Suiting</span></div>
+      <div class="swatch"><div class="chip" style="background:#a6813c;"></div><span>Brass Silk</span></div>
+      <div class="swatch"><div class="chip" style="background:#7c8a6e;"></div><span>Olive Khaddar</span></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-head">
+      <div class="tag">Our Work</div>
+      <h2>Kuch recent kaam</h2>
+    </div>
+    <div class="gallery-grid reveal-stagger">
+      <div class="gallery-item" style="background:#2b1f22;">
+        <img src="https://images.unsplash.com/photo-1739797725182-9823eace187e?fm=jpg&q=65&w=600&fit=crop" alt="Groom Sherwani" loading="lazy">
+        <span>Groom Sherwani</span>
+      </div>
+      <div class="gallery-item" style="background:#1e2430;">
+        <img src="https://images.unsplash.com/photo-1584184924103-e310d9dc82fc?fm=jpg&q=65&w=600&fit=crop" alt="3-Piece Suit" loading="lazy">
+        <span>3-Piece Suit</span>
+      </div>
+      <div class="gallery-item" style="background:#2e2a1c;">
+        <img src="https://images.unsplash.com/photo-1695716633414-00c72503fc9b?fm=jpg&q=65&w=600&fit=crop" alt="Eid Shalwar Kameez" loading="lazy">
+        <span>Eid Shalwar Kameez</span>
+      </div>
+      <div class="gallery-item" style="background:#232323;">
+        <img src="https://images.unsplash.com/photo-1739797725062-87f41f9e3d46?fm=jpg&q=65&w=600&fit=crop" alt="Office Formal" loading="lazy">
+        <span>Office Formal</span>
+      </div>
+      <div class="gallery-item" style="background:#2a2020;">
+        <img src="https://images.unsplash.com/photo-1624855538737-e49987b57f55?fm=jpg&q=65&w=600&fit=crop" alt="Waskat Set" loading="lazy">
+        <span>Waskat Set</span>
+      </div>
+      <div class="gallery-item" style="background:#241f2c;">
+        <img src="https://images.unsplash.com/photo-1753164597544-a2736833357e?fm=jpg&q=65&w=600&fit=crop" alt="Wedding Guest Outfit" loading="lazy">
+        <span>Wedding Guest Outfit</span>
+      </div>
+    </div>
+    <p style="margin-top:22px; font-size:0.8rem; color:var(--stone);">* Ye demo photos hain — apni asli kaam ki tasveerein tailor se WhatsApp karke yahan lagwa sakte ho.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-head">
+      <div class="tag">Get In Touch</div>
+      <h2>Apni fitting book karayein</h2>
+    </div>
+    <div class="contact-wrap reveal">
+      <div class="contact-card">
+        <h3>Inquiry bhejein</h3>
+        <p class="desc">Form bharein, hum WhatsApp ya call par 24 ghantay mein contact karenge.</p>
+        <form id="inquiryForm">
+          <div class="form-row">
+            <label for="name">Naam</label>
+            <input type="text" id="name" placeholder="Aapka naam" required>
+          </div>
+          <div class="form-row">
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" placeholder="03XX-XXXXXXX" required>
+          </div>
+          <div class="form-row">
+            <label for="service">Service</label>
+            <select id="service">
+              <option>Formal Suit</option>
+              <option>Shalwar Kameez</option>
+              <option>Sherwani / Waskat</option>
+              <option>Alteration</option>
+              <option>Uniform (Bulk)</option>
+              <option>Kuch aur</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="msg">Message</label>
+            <textarea id="msg" placeholder="Apni requirement bataein — fabric, deadline, waghera"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">WhatsApp par bhejein</button>
+        </form>
+      </div>
+      <div class="info-block">
+        <div class="info-line"><div class="k">Location</div><div class="v">Karachi, Pakistan</div></div>
+        <div class="info-line"><div class="k">WhatsApp</div><div class="v">+92 317 2946267</div></div>
+        <div class="info-line"><div class="k">Timing</div><div class="v">Mon–Sat, 11:00 AM – 9:00 PM</div></div>
+        <div class="info-line"><div class="k">Delivery</div><div class="v">3–7 din (normal) · 48hrs (rush)</div></div>
+        <p style="margin-top:24px; font-size:0.85rem; color:#514c45; line-height:1.6;">Number aur location apni actual details se replace kar lein — yeh sirf placeholder hai.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="stitch"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#8B8478" stroke-width="1.4"><path d="M4 12 L20 12 M4 12 L8 8 M4 12 L8 16"/></svg><span></span></div>
+  © 2026 Cassiano Fabric and Tailors, Karachi. Har fitting, ek wada.
+</footer>
+
+<a class="wa-float" id="waFloat" href="https://wa.me/923172946267?text=Assalam%20o%20Alaikum%2C%20mujhe%20apni%20stitching%20ke%20baray%20mein%20maloomat%20chahiye." target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.86 8.86 0 0 0 12 4a8.9 8.9 0 0 0-7.6 13.4L3 21l3.7-1.3A8.9 8.9 0 0 0 12 21a8.9 8.9 0 0 0 5.6-15.7ZM12 19.3a7.3 7.3 0 0 1-3.7-1l-.3-.2-2.7 1 .9-2.6-.2-.3A7.3 7.3 0 1 1 12 19.3Zm4-5.4c-.2-.1-1.3-.6-1.5-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.8-.3.2-.5.1a6 6 0 0 1-1.8-1.1 6.6 6.6 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.5.5 0 0 0 0-.4c0-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2 4.7 4.7 0 0 0 1 2.5 10.8 10.8 0 0 0 4.1 3.6c.6.2 1 .4 1.4.5a3.3 3.3 0 0 0 1.5.1 2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
+  WhatsApp
+</a>
+
+<script>
+  const tabs = document.querySelectorAll('nav a[data-tab]');
+  const sections = document.querySelectorAll('main section');
+  const navList = document.getElementById('navList');
+  const navToggle = document.getElementById('navToggle');
+
+  // Smooth-scroll nav clicks to the right section (mobile menu closes after)
+  tabs.forEach(t => t.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById(t.dataset.tab).scrollIntoView({ behavior:'smooth' });
+    navList.classList.remove('open');
+  }));
+
+  navToggle.addEventListener('click', () => navList.classList.toggle('open'));
+
+  // Scrollspy — highlights the nav item for whichever section is on screen
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === entry.target.id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  sections.forEach(s => spyObserver.observe(s));
+
+  // Scroll reveal — stitch-in animation as elements enter view
+  const revealTargets = document.querySelectorAll('.reveal, .reveal-stagger');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealTargets.forEach(el => revealObserver.observe(el));
+
+  document.getElementById('inquiryForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const service = document.getElementById('service').value;
+    const msg = document.getElementById('msg').value;
+    const text = `Assalam o Alaikum, mera naam ${name} hai.%0AService: ${service}%0APhone: ${phone}%0AMessage: ${msg}`;
+    window.open(`https://wa.me/923172946267?text=${text}`, '_blank');
+  });
+</script>
+
+</body>
+</html>
